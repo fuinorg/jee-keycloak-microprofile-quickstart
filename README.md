@@ -2,24 +2,24 @@
 JEE Wildfly Keycloak Microprofile REST Swagger Quickstart
 
 This is a fully configured example microservice that uses:
-- JEE Wildfly 14.0.1.Final
-- Keycloak (Identity and Access Management)
-- PostgreSQL Database (used for Keycloak and the Microservice)
-- pgadmin4 (Admin GUI for PostgreSQL)
-- Swagger UI
-- Jaeger (End-to-end Distributed Tracing)
-- Docker (Container built using docker-maven-plugin)
+- JEE [Wildfly](https://wildfly.org/) 14.0.1.Final
+- [Keycloak](https://www.keycloak.org/) (Identity and Access Management)
+- [PostgreSQL](https://www.postgresql.org/) Database (used for Keycloak and the Microservice)
+- [pgAdmin4](https://www.pgadmin.org/) (Admin GUI for PostgreSQL)
+- [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- [Jaeger](https://www.jaegertracing.io/) (End-to-end Distributed Tracing)
+- [Docker](https://www.docker.com/) (Container built using [docker-maven-plugin](https://github.com/fabric8io/docker-maven-plugin))
 
 The microservice has:
-- JAX-RS Microservice (REST API)
-- Eclipse MicroProfile OpenTracing
-- Eclipse MicroProfile Fault Tolerance
-- Services secured with Keycloak OAUTH
-- Java security annotations like "@RolesAllowed"
-- Open API YAML
-- JPA configured for PostgreSQL
-- Apache DeltaSpike Data Module
-- CORS Filter
+- [JAX-RS](https://projects.eclipse.org/projects/ee4j.jaxrs) Microservice (REST API)
+- [Eclipse MicroProfile OpenTracing](https://github.com/eclipse/microprofile-opentracing)
+- [Eclipse MicroProfile Fault Tolerance](https://github.com/eclipse/microprofile-fault-tolerance)
+- Services secured with Keycloak OAUTH (See [keycloak.json](src/main/webapp/WEB-INF/keycloak.json))
+- Java security annotations like **@RolesAllowed**
+- [Open API](https://swagger.io/docs/specification/about/) (See [api.yaml](/src/main/webapp/api.yaml))
+- Java Persistence API (JPA) configured for PostgreSQL (See [persistence.xml](src/main/resources/META-INF/persistence.xml))
+- [Apache DeltaSpike Data Module](https://deltaspike.apache.org/documentation/data.html)
+- [CORS Filter](src/main/java/org/fuin/examples/jkmq/service/StaticCorsFilter.java)
 
 Other features:
 - Local developer testing using nginx as reverse proxy and project specific local service domains in 'etc/hosts'.
@@ -30,17 +30,17 @@ Other features:
 - [Eclipse Microprofile Metrics](https://github.com/eclipse/microprofile-metrics)
 
 ## Getting started
-The following instructions were only tested on Ubuntu Linux. Windows is not supported.
+The following instructions were only tested on [Lubuntu](https://lubuntu.net/) Linux. Windows is not supported.
 
 ### Install nginx and add host entries
-Execute the following script to install nginx as reverse proxy and add some names to "/etc/hosts":
+Execute the following script to install [nginx](https://www.nginx.com/) as reverse proxy and add some names to "/etc/hosts":
 
 ```
 ./install-and-configure-nginx.sh
 ```
 
 ### Create file with passwords
-Create a file named '.env' in the same directory as the 'docker-compose.yml' with the following content:
+Create a file named '.env' in the same directory as the [docker-compose.yml](docker-compose.yml) with the following content:
 
 ```
 postgresRootPassword=<your-password>
@@ -77,7 +77,7 @@ You can connect via your browser to the following applications (all on port 8080
 ### Additional applications (not mapped via nginx reverse proxy):
 You can connect via your browser to the following applications on their specific port:
 * Jaeger: http://jkmq-jaeger:16686
-* PgAdmin4: http://jkmq-pgadmin4:8084
+* pgAdmin4: http://jkmq-pgadmin4:8084
     * Login
        * Email: admin@localhost
        * PW: ${postgresPassword}
