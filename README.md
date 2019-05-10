@@ -50,11 +50,22 @@ keycloakPassword=<one-more-password>
 ```
 
 ### Start Docker Compose
-Run Docker Compose to start all parts of the application:
+Run Docker Compose to start all parts of the application: 
 
 ```
 docker-compose -f ./docker-compose.yml up
 ```
+
+### Stop the application
+Press <ctrl><c> on the console
+
+### Remove Docker Compose files
+Run Docker Compose to remove all parts of the application:
+
+```
+docker-compose rm
+```
+
 
 ### Applications mapped via nginx reverse proxy:
 You can connect via your browser to the following applications (all on port 8080):
