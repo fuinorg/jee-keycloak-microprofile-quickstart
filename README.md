@@ -43,10 +43,10 @@ Execute the following script to install nginx as reverse proxy and add some name
 Create a file named '.env' in the same directory as the 'docker-compose.yml' with the following content:
 
 ```
-postgresRootPassword=root123
-postgresPassword=postgres123
+postgresRootPassword=<your-password>
+postgresPassword=<another-password>
 keycloakUser=admin
-keycloakPassword=admin123
+keycloakPassword=<one-more-password>
 ```
 
 ### Start Docker Compose
