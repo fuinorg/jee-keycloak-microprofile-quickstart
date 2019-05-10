@@ -1,0 +1,9 @@
+server {
+	listen       8080;
+	server_name  jkmq-service;
+	access_log   /var/log/nginx/access-jkmq-service.log;
+	location / {
+		proxy_pass    http://localhost:8081/;
+		include       /etc/nginx/proxy.conf;
+	}
+}

@@ -1,0 +1,113 @@
+openapi: 3.0.0
+
+info:
+  version: 0.1.0-SNAPSHOT
+  title: jee-keycloak-microprofile-quickstart
+
+paths:
+
+  /persons:
+    get:
+      summary: Get all persons
+      description: Returns a list of all currently known persons
+      operationId: getPersons
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persons'
+        '401':
+          description: >-
+            User has not logged in or has not the apropriate rule assigned to
+            call this function
+      security:
+        - jkmq_auth: []
+
+  '/persons/{personId}':
+    get:
+      summary: Get a person
+      description: Returns a single person
+      operationId: getPerson
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '401':
+          description: >-
+            User has not logged in or has not the apropriate rule assigned to
+            call this function
+        '404':
+          description: Unknown person
+      security:
+        - jkmq_auth: []
+
+  /admin/hello:
+    get:
+      summary: Hello to admin
+      description: Protected resource only a user with role 'admin' can access
+      operationId: getHello
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          description: >-
+            User has not logged in or has not the apropriate rule assigned to
+            call this function
+      security:
+        - jkmq_auth: []
+
+servers:
+  - url: 'http://jkmq-service:8080/jkmq-service/api'
+
+components:
+  securitySchemes:
+    jkmq_auth:
+      description: ''
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://jkmq-keycloak:8080/auth/realms/jkmq/protocol/openid-connect/auth'
+          scopes: {}
+ 
+  schemas:
+ 
+    Person:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/PersonId'
+        name:
+          $ref: '#/components/schemas/PersonName'
+ 
+    Persons:
+      type: array
+      items:
+        $ref: '#/components/schemas/Person'
+ 
+    PersonId:
+      type: integer
+      title: Person ID
+      description: Unique identifier of a person
+      example: 12345
+ 
+    PersonName:
+      type: string
+      minLength: 1
+      maxLength: 200
+      example: Peter Parker
+      title: Name
+      description: First name and last name of the person

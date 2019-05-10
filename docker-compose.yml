@@ -1,0 +1,116 @@
+version: '2.4'
+
+services:
+
+  jkmq-postgres:
+    image: postgres:11.0
+    container_name: "jkmq-postgres"
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${postgresPassword}
+    networks:
+      - jkmq-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  jkmq-keycloak:
+    image: fuinorg/keycloak-testready:1.1.0
+    container_name: "jkmq-keycloak"
+    ports:
+      - "127.0.0.1:8088:8080"
+    environment:
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=jkmq-postgres
+      - DB_PORT=5432
+      - DB_DATABASE=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=${postgresPassword}
+      - KEYCLOAK_USER=${keycloakUser}
+      - KEYCLOAK_PASSWORD=${keycloakPassword}
+      - "IMPORT_JSON={  \"realm\": \"jkmq\",  \"enabled\": true,  \"requiredCredentials\": [    \"password\"  ],  \"roles\": {    \"realm\": [      {       \"name\": \"user\",       \"description\": \"User privileges\"      },      {       \"name\": \"admin\",        \"description\": \"Administrator privileges\"     }   ] },  \"users\": [    {     \"username\": \"jane\",     \"enabled\": true,      \"credentials\": [        {         \"type\": \"password\",         \"value\": \"abc\"        }     ],      \"realmRoles\": [       \"admin\"     ]   },    {     \"username\": \"john\",     \"enabled\": true,      \"credentials\": [        {         \"type\": \"password\",         \"value\": \"abc\"        }     ],      \"realmRoles\": [       \"user\"      ]   } ],  \"clients\": [    {     \"clientId\": \"jkmq-service\",     \"bearerOnly\": true    },    {     \"clientId\": \"swagger-ui\",     \"bearerOnly\": false,      \"standardFlowEnabled\": false,     \"implicitFlowEnabled\": true,      \"directAccessGrantsEnabled\": false,     \"publicClient\": true,     \"redirectUris\": [       \"http://jkmq-swagger-ui:8080/oauth2-redirect.html\"      ]   } ]}"
+    networks:
+      - jkmq-net
+    healthcheck:
+      test: curl -sS http://127.0.0.1:8080 || exit 1
+      interval: 5s
+      timeout: 60s
+      retries: 10
+    depends_on:
+      jkmq-postgres:
+        condition: service_healthy
+
+  jkmq-service:
+    image: fuinorg/jee-keycloak-microprofile-quickstart:latest
+    container_name: "jkmq-service"
+    ports:
+      - "127.0.0.1:8081:8080"
+    environment:
+      - INSTALL_POSTGRES=true
+      - POSTGRES_VERSION=42.2.5
+      - POSTGRES_HOST=jkmq-postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_DATASOURCE=JKMQ
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${postgresPassword}
+      - JAEGER_REPORTER_LOG_SPANS=true
+      - JAEGER_SAMPLER_TYPE=const
+      - JAEGER_SAMPLER_PARAM=1      
+      - JAEGER_SERVICE_NAME=jkmq-service
+      - JAEGER_AGENT_HOST=jkmq-jaeger
+    networks:
+     - jkmq-net
+    depends_on:
+      jkmq-keycloak:
+        condition: service_healthy
+      jkmq-postgres:
+        condition: service_healthy
+      
+  jkmq-swagger-ui:
+    image: swaggerapi/swagger-ui:v3.19.4
+    container_name: "jkmq-swagger-ui"
+    command: >
+      sh -c "find /usr/share/nginx/html -type f \\( -iname \\*.js.map -o -iname \\*.js \\) -exec sed -i -e 's/localhost:3200/jkmq-swagger-ui:8080/g; s/localhost/jkmq-swagger-ui:8080/g' {} \\; &&
+             /usr/share/nginx/docker-run.sh"
+    ports:
+      - "127.0.0.1:8083:8080"
+    environment:
+      - API_URL=http://jkmq-service:8080/jkmq-service/api.yaml
+    networks:
+     - jkmq-net
+    depends_on:
+     - jkmq-service
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.7
+    container_name: "jkmq-jaeger"
+    ports:
+      - "127.0.0.1:6831:6831/udp" # Compact thrift protocol
+      - "127.0.0.1:6832:6832/udp" # Binary thrift protocol
+      - "127.0.0.1:5778:5778" # HTTP agent serve configs
+      - "127.0.0.1:16686:16686" # HTTP query serve frontend
+      - "127.0.0.1:14268:14268" # HTTP thrift directly from clients
+    networks:
+     - jkmq-net
+
+  pgadmin4:
+    image: dpage/pgadmin4:4.6
+    container_name: "jkmq-pgadmin4"
+    ports:
+      - "127.0.0.1:8084:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@localhost
+      - PGADMIN_DEFAULT_PASSWORD=${postgresPassword}
+    networks:
+     - jkmq-net
+
+networks:
+  jkmq-net:
+    name: jkmq-net
+  

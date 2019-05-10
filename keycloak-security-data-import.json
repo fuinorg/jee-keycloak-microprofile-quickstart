@@ -1,0 +1,64 @@
+{
+	"realm": "jkmq",
+	"enabled": true,
+	"requiredCredentials": [
+		"password"
+	],
+	"roles": {
+		"realm": [
+			{
+				"name": "user",
+				"description": "User privileges"
+			},
+			{
+				"name": "admin",
+				"description": "Administrator privileges"
+			}
+		]
+	},
+	"users": [
+		{
+			"username": "jane",
+			"enabled": true,
+			"credentials": [
+				{
+					"type": "password",
+					"value": "abc"
+				}
+			],
+			"realmRoles": [
+				"admin"
+			]
+		},
+		{
+			"username": "john",
+			"enabled": true,
+			"credentials": [
+				{
+					"type": "password",
+					"value": "abc"
+				}
+			],
+			"realmRoles": [
+				"user"
+			]
+		}
+	],
+	"clients": [
+		{
+			"clientId": "jkmq-service",
+			"bearerOnly": true
+		},
+		{
+			"clientId": "swagger-ui",
+			"bearerOnly": false,
+			"standardFlowEnabled": false,
+			"implicitFlowEnabled": true,
+			"directAccessGrantsEnabled": false,
+			"publicClient": true,
+			"redirectUris": [
+				"http://jkmq-swagger-ui:8080/oauth2-redirect.html"
+			]
+		}
+	]
+}

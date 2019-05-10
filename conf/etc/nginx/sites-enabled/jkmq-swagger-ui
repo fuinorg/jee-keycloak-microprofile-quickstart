@@ -1,0 +1,9 @@
+server {
+	listen       8080;
+	server_name  jkmq-swagger-ui;
+	access_log   /var/log/nginx/access-jkmq-swagger-ui.log;
+	location / {
+		proxy_pass    http://localhost:8083/;
+		include       /etc/nginx/proxy.conf;
+	}
+}
