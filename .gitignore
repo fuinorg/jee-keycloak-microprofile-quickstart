@@ -1,4 +1,7 @@
 .*
 !.gitignore
+!.gitkeep
+!.mvn
 target
+META-INF
 *.log
