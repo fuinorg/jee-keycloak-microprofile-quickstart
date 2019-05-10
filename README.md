@@ -57,7 +57,7 @@ docker-compose -f ./docker-compose.yml up
 ```
 
 ### Stop the application
-Press `ctrl><c>` on the console
+Press `<ctrl><c>` on the console
 
 ### Remove Docker Compose files
 Run Docker Compose to remove all parts of the application:
