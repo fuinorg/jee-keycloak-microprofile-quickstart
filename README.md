@@ -74,7 +74,7 @@ fuinorg/jee-keycloak-microprofile-quickstart   latest              xxxxxxxxxxxx 
 Run Docker Compose to start all parts of the application: 
 
 ```
-docker-compose -f ./docker-compose.yml up
+docker-compose up
 ```
 
 ### Stop the application
