@@ -27,3 +27,10 @@ After you finished your work
 ```
 docker-compose -f docker-compose-chrome.yml rm
 ```
+
+## Troubleshooting
+If you see this error message, you forgot to run "xhost local:root" (See above):
+
+```
+jkmq-chrome | (google-chrome:1): Gtk-WARNING **: 12:30:00.000: cannot open display: unix:0
+```
