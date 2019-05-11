@@ -1,6 +1,7 @@
 # jee-keycloak-microprofile-quickstart
 JEE Wildfly Keycloak Microprofile REST Swagger Quickstart
 
+## Features
 This is a fully configured example microservice that uses:
 - JEE [Wildfly](https://wildfly.org/) 14.0.1.Final
 - [Keycloak](https://www.keycloak.org/) (Identity and Access Management)
@@ -55,6 +56,19 @@ postgresPassword=<another-password>
 keycloakUser=admin
 keycloakPassword=<one-more-password>
 ```
+
+### Build the microservice
+The Java microservice is built locally using the [Maven Wrapper](https://github.com/takari/maven-wrapper).
+**CAUTION:** Requires Java 1.8 to build (1.9+ is currently not supported).
+```
+./mvnw clean package
+```
+
+docker images
+REPOSITORY                                     TAG                 IMAGE ID            CREATED             SIZE
+fuinorg/jee-keycloak-microprofile-quickstart   0.1.0-SNAPSHOT      xxxxxxxxxxxx        16 hours ago        658 MB
+fuinorg/jee-keycloak-microprofile-quickstart   latest              xxxxxxxxxxxx        16 hours ago        658 MB
+
 
 ### Start Docker Compose
 Run Docker Compose to start all parts of the application: 
