@@ -22,7 +22,8 @@ The microservice has:
 - [CORS Filter](src/main/java/org/fuin/examples/jkmq/service/StaticCorsFilter.java)
 
 Other features:
-- Local developer testing using nginx as reverse proxy and project specific local service domains in 'etc/hosts'.
+- Local developer testing with nginx as reverse proxy and project specific local service domains in 'etc/hosts'.
+- Local developer testing with Chrome in a Docker container
 
 **TODO**
 - *FEATURE BROKEN* (See [ELY-1705](https://issues.jboss.org/browse/ELY-1705)) Protect the Wildfly Management Console with Keycloak
@@ -32,7 +33,13 @@ Other features:
 ## Getting started
 The following instructions were only tested on [Lubuntu](https://lubuntu.net/) Linux. Windows is not supported.
 
-### Install nginx and add host entries
+### Local developer access to running containers
+There are two options to access the running application with your browser.
+
+#### Use a Chrome browser in a Docker container (Zero install)
+See [docker-compose-chrome.md](docker-compose-chrome.md) for instructions on how to start the Chrome Docker container.
+
+#### Install nginx and add host entries (Installation required)
 Execute the following script to install [nginx](https://www.nginx.com/) as reverse proxy and add some names to "/etc/hosts":
 
 ```
