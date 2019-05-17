@@ -5,8 +5,6 @@ services:
   jkmq-postgres:
     image: postgres:11.0
     container_name: "jkmq-postgres"
-    ports:
-      - "127.0.0.1:5432:5432"
     environment:
       - POSTGRES_DATABASE=postgres
       - POSTGRES_USER=postgres
@@ -22,8 +20,6 @@ services:
   jkmq-keycloak:
     image: fuinorg/keycloak-testready:1.1.0
     container_name: "jkmq-keycloak"
-    ports:
-      - "127.0.0.1:8088:8080"
     environment:
       - DB_VENDOR=POSTGRES
       - DB_ADDR=jkmq-postgres
@@ -48,8 +44,6 @@ services:
   jkmq-service:
     image: fuinorg/jee-keycloak-microprofile-quickstart:latest
     container_name: "jkmq-service"
-    ports:
-      - "127.0.0.1:8081:8080"
     environment:
       - INSTALL_POSTGRES=true
       - POSTGRES_VERSION=42.2.5
@@ -78,8 +72,6 @@ services:
     command: >
       sh -c "find /usr/share/nginx/html -type f \\( -iname \\*.js.map -o -iname \\*.js \\) -exec sed -i -e 's/localhost:3200/jkmq-swagger-ui:8080/g; s/localhost/jkmq-swagger-ui:8080/g' {} \\; &&
              /usr/share/nginx/docker-run.sh"
-    ports:
-      - "127.0.0.1:8083:8080"
     environment:
       - API_URL=http://jkmq-service:8080/jkmq-service/api.yaml
     networks:
@@ -90,20 +82,12 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:1.7
     container_name: "jkmq-jaeger"
-    ports:
-      - "127.0.0.1:6831:6831/udp" # Compact thrift protocol
-      - "127.0.0.1:6832:6832/udp" # Binary thrift protocol
-      - "127.0.0.1:5778:5778" # HTTP agent serve configs
-      - "127.0.0.1:16686:16686" # HTTP query serve frontend
-      - "127.0.0.1:14268:14268" # HTTP thrift directly from clients
     networks:
      - jkmq-net
 
   pgadmin4:
     image: dpage/pgadmin4:4.6
     container_name: "jkmq-pgadmin4"
-    ports:
-      - "127.0.0.1:8084:80"
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@localhost
       - PGADMIN_DEFAULT_PASSWORD=${postgresPassword}

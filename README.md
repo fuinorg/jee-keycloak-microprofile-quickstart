@@ -24,8 +24,7 @@ The microservice has:
 - [JSON-B Resolver](src/main/java/org/fuin/examples/jkmq/service/JsonbResolver.java)
 
 Other features:
-- Local developer testing with nginx as reverse proxy and project specific local service domains in 'etc/hosts'.
-- Local developer testing with Chrome in a Docker container
+- Local developer testing with [Chrome in a Docker container](docker-compose-chrome.md) (No ports are mapped in the [docker-compose.yml](docker-compose.yml)) 
 
 **TODO**
 - *FEATURE BROKEN* (See [ELY-1705](https://issues.jboss.org/browse/ELY-1705)) Protect the Wildfly Management Console with Keycloak
@@ -34,19 +33,6 @@ Other features:
 
 ## Getting started
 The following instructions were only tested on [Lubuntu](https://lubuntu.net/) Linux. Windows is not supported.
-
-### Local developer access to running containers
-There are two options to access the running application with your browser.
-
-#### Use a Chrome browser in a Docker container (Zero install)
-See [docker-compose-chrome.md](docker-compose-chrome.md) for instructions on how to start the Chrome Docker container.
-
-#### Install nginx and add host entries (Installation required)
-Execute the following script to install [nginx](https://www.nginx.com/) as reverse proxy and add some names to "/etc/hosts":
-
-```
-./install-and-configure-nginx.sh
-```
 
 ### Create file with passwords
 Create a file named '.env' in the same directory as the [docker-compose.yml](docker-compose.yml) with the following content:
@@ -82,6 +68,11 @@ Run Docker Compose to start all parts of the application:
 docker-compose up
 ```
 
+### Use a Chrome browser in a Docker container
+You can access the application only **inside** the Docker private network as no ports are mapped to the host.
+This is possible by using a Chrome browser that is running inside a Docker container.
+See [docker-compose-chrome.md](docker-compose-chrome.md) for instructions on how to start the Chrome Docker container.
+
 ### Stop the application
 Press `<ctrl><c>` on the console
 
@@ -93,16 +84,19 @@ docker-compose rm
 ```
 
 
-### Applications mapped via nginx reverse proxy:
-You can connect via your browser to the following applications (all on port 8080):
-* Swagger UI: http://jkmq-swagger-ui:8080/
+### Applications
+You can connect via the Chrome browser to the following applications:
+
+* Swagger UI: [http://jkmq-swagger-ui:8080/](http://jkmq-swagger-ui:8080/)
     * Use the "Authorize" button to connect to KeyCloak
     * The *client-id* to use is **swagger-ui**
-* Keycloak: http://jkmq-keycloak:8080/auth/admin/master/console/
+
+* Keycloak: [http://jkmq-keycloak:8080/auth/admin/master/console/](http://jkmq-keycloak:8080/auth/admin/master/console/)
      * KeyCloak administrator
          * User: ${keycloakUser}
          * Password: ${keycloakPassword}
-* Example Service: http://jkmq-service:8080/jkmq-service/api/
+
+* Example Service: [http://jkmq-service:8080/jkmq-service/api/](http://jkmq-service:8080/jkmq-service/api/)
      * See [keycloak-security-data-import.json](keycloak-security-data-import.json) for demo security setup
      * User with service role "admin" (Not allowd to run "/persons/*")
          * User: jane
@@ -111,10 +105,9 @@ You can connect via your browser to the following applications (all on port 8080
          * User: john
          * Password: abc
 
-### Additional applications (not mapped via nginx reverse proxy):
-You can connect via your browser to the following applications on their specific port:
-* Jaeger: http://jkmq-jaeger:16686
-* pgAdmin4: http://jkmq-pgadmin4:8084
+* Jaeger: [http://jkmq-jaeger:16686](http://jkmq-jaeger:16686)
+
+* pgAdmin4: [http://jkmq-pgadmin4](http://jkmq-pgadmin4)
     * Login
        * Email: admin@localhost
        * PW: ${postgresPassword}
