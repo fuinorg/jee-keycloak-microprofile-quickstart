@@ -21,6 +21,7 @@ The microservice has:
 - Java Persistence API (JPA) configured for PostgreSQL (See [persistence.xml](src/main/resources/META-INF/persistence.xml))
 - [Apache DeltaSpike Data Module](https://deltaspike.apache.org/documentation/data.html)
 - [CORS Filter](src/main/java/org/fuin/examples/jkmq/service/StaticCorsFilter.java)
+- [JSON-B Resolver](src/main/java/org/fuin/examples/jkmq/service/JsonbResolver.java)
 
 Other features:
 - Local developer testing with nginx as reverse proxy and project specific local service domains in 'etc/hosts'.

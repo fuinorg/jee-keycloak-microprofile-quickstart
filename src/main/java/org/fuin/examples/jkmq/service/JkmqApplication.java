@@ -16,6 +16,7 @@ public class JkmqApplication extends Application {
         classes.add(PersonResource.class);
         classes.add(AdminResource.class);
         classes.add(EJBExceptionMapper.class);
+        classes.add(JsonbResolver.class);
         return classes;
 
     }
