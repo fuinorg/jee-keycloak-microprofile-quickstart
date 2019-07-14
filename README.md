@@ -3,7 +3,8 @@ JEE Wildfly Keycloak Microprofile REST Swagger Quickstart
 
 ## Features
 This is a fully configured example microservice that uses:
-- JEE [Wildfly](https://wildfly.org/) 14.0.1.Final
+- JEE [Wildfly](https://wildfly.org/) 16.0.0.Final
+- Uses [wildfly-keycloak-microprofile](https://github.com/fuinorg/wildfly-keycloak-microprofile) Docker image
 - [Keycloak](https://www.keycloak.org/) (Identity and Access Management)
 - [PostgreSQL](https://www.postgresql.org/) Database (used for Keycloak and the Microservice)
 - [pgAdmin4](https://www.pgadmin.org/) (Admin GUI for PostgreSQL)
@@ -57,7 +58,7 @@ You should now be able to see the new Docker image:
 ```
 docker images
 REPOSITORY                                     TAG                 IMAGE ID            CREATED             SIZE
-fuinorg/jee-keycloak-microprofile-quickstart   0.1.0-SNAPSHOT      xxxxxxxxxxxx        16 hours ago        658 MB
+fuinorg/jee-keycloak-microprofile-quickstart   0.2.0-SNAPSHOT      xxxxxxxxxxxx        16 hours ago        658 MB
 fuinorg/jee-keycloak-microprofile-quickstart   latest              xxxxxxxxxxxx        16 hours ago        658 MB
 ```
 
